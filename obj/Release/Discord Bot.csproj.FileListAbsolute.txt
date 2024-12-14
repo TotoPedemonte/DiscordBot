@@ -1,7 +1,6 @@
 C:\Users\toto_\RiderProjects\Discord Bot\bin\Release\Discord_Bot.dll.config
 C:\Users\toto_\RiderProjects\Discord Bot\bin\Release\Discord_Bot.dll
 C:\Users\toto_\RiderProjects\Discord Bot\bin\Release\Discord_Bot.pdb
-C:\Users\toto_\RiderProjects\Discord Bot\bin\Release\0Harmony.dll
 C:\Users\toto_\RiderProjects\Discord Bot\bin\Release\Discord.Net.Core.dll
 C:\Users\toto_\RiderProjects\Discord Bot\bin\Release\Discord.Net.Rest.dll
 C:\Users\toto_\RiderProjects\Discord Bot\bin\Release\Discord.Net.WebSocket.dll
@@ -19,7 +18,6 @@ C:\Users\toto_\RiderProjects\Discord Bot\bin\Release\Newtonsoft.Json.dll
 C:\Users\toto_\RiderProjects\Discord Bot\bin\Release\SemanticVersioning.dll
 C:\Users\toto_\RiderProjects\Discord Bot\bin\Release\System.Buffers.dll
 C:\Users\toto_\RiderProjects\Discord Bot\bin\Release\System.Collections.Immutable.dll
-C:\Users\toto_\RiderProjects\Discord Bot\bin\Release\System.ComponentModel.DataAnnotations.dll
 C:\Users\toto_\RiderProjects\Discord Bot\bin\Release\System.Interactive.Async.dll
 C:\Users\toto_\RiderProjects\Discord Bot\bin\Release\System.Linq.Async.dll
 C:\Users\toto_\RiderProjects\Discord Bot\bin\Release\System.Memory.dll
@@ -47,10 +45,8 @@ C:\Users\toto_\RiderProjects\Discord Bot\obj\Release\Discord Bot.csproj.CoreComp
 C:\Users\toto_\RiderProjects\Discord Bot\obj\Release\Discord .43984F48.Up2Date
 C:\Users\toto_\RiderProjects\Discord Bot\obj\Release\Discord_Bot.dll
 C:\Users\toto_\RiderProjects\Discord Bot\obj\Release\Discord_Bot.pdb
-C:\Users\toto_\RiderProjects\Discord Bot\bin\Release\Assembly-CSharp.dll
 C:\Users\toto_\RiderProjects\Discord Bot\bin\Release\Mirror.dll
 C:\Users\toto_\RiderProjects\Discord Bot\bin\Release\UnityEngine.CoreModule.dll
-C:\Users\toto_\RiderProjects\Discord Bot\bin\Release\PluginAPI.dll
 C:\Users\toto_\RiderProjects\Discord Bot\bin\Release\UnityEngine.PhysicsModule.dll
 C:\Users\toto_\RiderProjects\Discord Bot\bin\Release\UnityEngine.ParticleSystemModule.dll
 C:\Users\toto_\RiderProjects\Discord Bot\bin\Release\UnityEngine.AudioModule.dll
@@ -61,7 +57,6 @@ C:\Users\toto_\RiderProjects\Discord Bot\bin\Release\UnityEngine.UI.dll
 C:\Users\toto_\RiderProjects\Discord Bot\bin\Release\UnityEngine.VFXModule.dll
 C:\Users\toto_\RiderProjects\Discord Bot\bin\Release\Unity.RenderPipelines.Core.Runtime.dll
 C:\Users\toto_\RiderProjects\Discord Bot\bin\Release\UnityEngine.UIModule.dll
-C:\Users\toto_\RiderProjects\Discord Bot\bin\Release\NorthwoodLib.dll
 C:\Users\toto_\RiderProjects\Discord Bot\bin\Release\UnityEngine.UnityWebRequestModule.dll
 C:\Users\toto_\RiderProjects\Discord Bot\bin\Release\UnityEngine.TextRenderingModule.dll
 C:\Users\toto_\RiderProjects\Discord Bot\bin\Release\BouncyCastle.Cryptography.dll
@@ -71,7 +66,6 @@ C:\Users\toto_\RiderProjects\Discord Bot\bin\Release\Assembly-CSharp-firstpass.d
 C:\Users\toto_\RiderProjects\Discord Bot\bin\Release\Caress.dll
 C:\Users\toto_\RiderProjects\Discord Bot\bin\Release\UnityEngine.InputLegacyModule.dll
 C:\Users\toto_\RiderProjects\Discord Bot\bin\Release\UnityEngine.IMGUIModule.dll
-C:\Users\toto_\RiderProjects\Discord Bot\bin\Release\netstandard.dll
 C:\Users\toto_\RiderProjects\Discord Bot\bin\Release\UnityEngine.SharedInternalsModule.dll
 C:\Users\toto_\RiderProjects\Discord Bot\bin\Release\UnityEngine.TextCoreFontEngineModule.dll
 C:\Users\toto_\RiderProjects\Discord Bot\bin\Release\UnityEngine.Physics2DModule.dll

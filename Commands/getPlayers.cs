@@ -1,4 +1,5 @@
-﻿using System.Globalization;
+﻿using System;
+using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 using Discord_Bot.EventHandlers;
@@ -13,37 +14,38 @@ namespace Discord_Bot.Commands
     {
         public SlashCommandBuilder Data { get; } = new()
         {
-            Name = "leaderboard",
-            Description = "obtener los players de la partida",
+            Name = Main.Instance.Config.Commands.parentCommand,
+            Description = Main.Instance.Config.Commands.parentCommandDescription,
             DefaultMemberPermissions = GuildPermission.Administrator,
             Options = new()
             {
                 new()
                 {
-                    Name = "medical",
-                    Description = "Get the top 10 Players with most medical items used",
+                    //Medical Items
+                    Name = Main.Instance.Config.Commands.SubCommands.medicalCommand.CommandName,
+                    Description = Main.Instance.Config.Commands.SubCommands.medicalCommand.Description,
                     IsRequired = false,
                     Type = ApplicationCommandOptionType.SubCommand
                 },
                 new()
                 {
-                    Name = "kills",
-                    Description = "Get the top 10 Players with most medical items used",
+                    Name = Main.Instance.Config.Commands.SubCommands.KillsCommand.CommandName,
+                    Description = Main.Instance.Config.Commands.SubCommands.KillsCommand.Description,
                     IsRequired = false,
                     Type = ApplicationCommandOptionType.SubCommandGroup,
                     Options = new()
                     {
                         new ()
                         {
-                            Name = "human",
-                            Description = "Get the top 10 Players with most human kills",
+                            Name = Main.Instance.Config.Commands.SubCommands.KillsCommand.humanKills.CommandName,
+                            Description = Main.Instance.Config.Commands.SubCommands.KillsCommand.humanKills.Description,
                             IsRequired = false,
                             Type = ApplicationCommandOptionType.SubCommand,
                         },
                         new ()
                         {
-                            Name = "scp",
-                            Description = "Get the top 10 Players with most scp kills",
+                            Name = Main.Instance.Config.Commands.SubCommands.KillsCommand.scpKills.CommandName,
+                            Description = Main.Instance.Config.Commands.SubCommands.KillsCommand.scpKills.Description,
                             IsRequired = false,
                             Type = ApplicationCommandOptionType.SubCommand,
                         }
@@ -51,43 +53,43 @@ namespace Discord_Bot.Commands
                 },
                 new()
                 {
-                    Name = "escapes",
-                    Description = "Get the top 10 Players with most facility escapes",
+                    Name = Main.Instance.Config.Commands.SubCommands.escapesCommand.CommandName,
+                    Description = Main.Instance.Config.Commands.SubCommands.escapesCommand.Description,
                     IsRequired = false,
                     Type = ApplicationCommandOptionType.SubCommand
                 },
                 new()
                 {
-                    Name = "cuffs",
-                    Description = "Get the top 10 Players with most pleyers cuffed",
+                    Name = Main.Instance.Config.Commands.SubCommands.cuffsCommand.CommandName,
+                    Description = Main.Instance.Config.Commands.SubCommands.cuffsCommand.Description,
                     IsRequired = false,
                     Type = ApplicationCommandOptionType.SubCommand
                 },
                 new()
                 {
-                    Name = "damage",
-                    Description = "Get the top 10 Players with most damage dealt",
+                    Name = Main.Instance.Config.Commands.SubCommands.damageCommand.CommandName,
+                    Description = Main.Instance.Config.Commands.SubCommands.damageCommand.Description,
                     IsRequired = false,
                     Type = ApplicationCommandOptionType.SubCommand
                 },
                 new()
                 {
-                    Name = "rounds",
-                    Description = "Get the top 10 Players with most rounds played",
+                    Name = Main.Instance.Config.Commands.SubCommands.roundCommand.CommandName,
+                    Description = Main.Instance.Config.Commands.SubCommands.roundCommand.Description,
                     IsRequired = false,
                     Type = ApplicationCommandOptionType.SubCommand
                 },
                 new()
                 {
-                    Name = "timespent",
-                    Description = "Get the top 10 Players with most time spent in-game",
+                    Name = Main.Instance.Config.Commands.SubCommands.timespentCommand.CommandName,
+                    Description = Main.Instance.Config.Commands.SubCommands.timespentCommand.Description,
                     IsRequired = false,
                     Type = ApplicationCommandOptionType.SubCommand
                 },
                 new()
                 {
-                    Name = "timealive",
-                    Description = "Get the top 10 Players with most time beeing alive",
+                    Name = Main.Instance.Config.Commands.SubCommands.timealiveCommand.CommandName,
+                    Description =  Main.Instance.Config.Commands.SubCommands.timealiveCommand.Description,
                     IsRequired = false,
                     Type = ApplicationCommandOptionType.SubCommand
                 },
@@ -106,126 +108,121 @@ namespace Discord_Bot.Commands
             
             string subcommand = command.Data.Options.First().Name;
             
-            if (subcommand == "medical")
+            if (subcommand == Main.Instance.Config.Commands.SubCommands.medicalCommand.CommandName)
             {
                 var topPlayers = EventsHandler.playerStats.OrderByDescending(p => p.Value.MedicalItems)
-                    .Take(10)
+                    .Take(Main.Instance.Config.Commands.SubCommands.medicalCommand.AmmountOfPlyToDisplay)
                     .ToList();
-                /*
-                string response = "## **Top 10 Most Medical Item Uses**\n" + "```ansi\n" + string.Join("\n", topPlayers.Select((p, index) => $"\u001b[2;33m\u001b[2;33m{index + 1, 2}.\u001b[0m\u001b[2;33m\u001b[0m {p.Value.Nickname,-20} Medical Items Used: {p.Value.MedicalItems, -2}")) + "```";
-                */
                 EmbedBuilder embed = new EmbedBuilder()
-                    .WithTitle("**Top 10 Most Medical Item Uses**")
-                    .WithColor(uint.Parse("3498DB", NumberStyles.HexNumber))
-                    .WithDescription("```ansi\n" + string.Join("\n", topPlayers.Select((p, index) => $"\u001b[2;33m\u001b[2;33m{index + 1, 2}.\u001b[0m\u001b[2;33m\u001b[0m {p.Value.Nickname,-20} Medical Items: {p.Value.MedicalItems, -2}")) + "```");
-                await command.RespondAsync("", ephemeral:false, embed:embed.Build());
+                    .WithTitle(Main.Instance.Config.Commands.SubCommands.medicalCommand.Title)
+                    .WithColor(uint.Parse(Main.Instance.Config.Commands.SubCommands.medicalCommand.Color, NumberStyles.HexNumber))
+                    .WithDescription("```ansi\n" + string.Join("\n", topPlayers.Select((p, index) => String.Format(Main.Instance.Config.Commands.SubCommands.medicalCommand.Body, index + 1, p.Value.Nickname, p.Value.MedicalItems))) + "```"); /*$"\u001b[2;33m\u001b[2;33m{index + 1, 2}.\u001b[0m\u001b[2;33m\u001b[0m {p.Value.Nickname,-20} Medical Items: {p.Value.MedicalItems, -2}"*/
+                await command.RespondAsync("", ephemeral:Main.Instance.Config.Commands.SubCommands.medicalCommand.PrivateMessage, embed:embed.Build());
                 return;
             }
 
-            if (subcommand == "kills")
+            if (subcommand == Main.Instance.Config.Commands.SubCommands.KillsCommand.CommandName)
             {
                 string subsubcommand = command.Data.Options.First().Options.First().Name;
-                if (subsubcommand == "human")
+                if (subsubcommand == Main.Instance.Config.Commands.SubCommands.KillsCommand.humanKills.CommandName)
                 {
                     var topPlayers = EventsHandler.killsStats.OrderByDescending(p => p.Value.humanKills)
-                        .Take(10)
+                        .Take(Main.Instance.Config.Commands.SubCommands.KillsCommand.humanKills.AmmountOfPlyToDisplay)
                         .ToList();
                     EmbedBuilder embed = new EmbedBuilder()
-                        .WithTitle("**Top 10 Most human kills**")
-                        .WithColor(uint.Parse("01540F", NumberStyles.HexNumber))
-                        .WithDescription("```ansi\n" + string.Join("\n", topPlayers.Select((p, index) => $"\u001b[2;33m\u001b[2;33m{index + 1, 2}.\u001b[0m\u001b[2;33m\u001b[0m {p.Value.Nickname,-20} Kills: {p.Value.humanKills, -2}")) + "```");
-                    await command.RespondAsync("", ephemeral:false, embed:embed.Build());
+                        .WithTitle(Main.Instance.Config.Commands.SubCommands.KillsCommand.humanKills.Title)
+                        .WithColor(uint.Parse(Main.Instance.Config.Commands.SubCommands.KillsCommand.humanKills.Color, NumberStyles.HexNumber))
+                        .WithDescription("```ansi\n" + string.Join("\n", topPlayers.Select((p, index) => String.Format(Main.Instance.Config.Commands.SubCommands.KillsCommand.humanKills.Body, index + 1, p.Value.Nickname, p.Value.humanKills))) + "```");
+                    await command.RespondAsync("", ephemeral:Main.Instance.Config.Commands.SubCommands.KillsCommand.humanKills.PrivateMessage, embed:embed.Build());
                     return;
                 }
-                else
+                if (subsubcommand == Main.Instance.Config.Commands.SubCommands.KillsCommand.scpKills.CommandName)
                 {
                     var topPlayers = EventsHandler.killsStats.OrderByDescending(p => p.Value.scpKills)
-                        .Take(10)
+                        .Take(Main.Instance.Config.Commands.SubCommands.KillsCommand.scpKills.AmmountOfPlyToDisplay)
                         .ToList();
                     EmbedBuilder embed = new EmbedBuilder()
-                        .WithTitle("**Top 10 Most SCP kills**")
-                        .WithColor(uint.Parse("D60000", NumberStyles.HexNumber))
-                        .WithDescription("```ansi\n" + string.Join("\n", topPlayers.Select((p, index) => $"\u001b[2;33m\u001b[2;33m{index + 1, 2}.\u001b[0m\u001b[2;33m\u001b[0m {p.Value.Nickname,-20} Kills: {p.Value.scpKills, -2}")) + "```");
-                    await command.RespondAsync("", ephemeral:false, embed:embed.Build());
+                        .WithTitle(Main.Instance.Config.Commands.SubCommands.KillsCommand.scpKills.Title)
+                        .WithColor(uint.Parse(Main.Instance.Config.Commands.SubCommands.KillsCommand.scpKills.Color, NumberStyles.HexNumber))
+                        .WithDescription("```ansi\n" + string.Join("\n", topPlayers.Select((p, index) => String.Format(Main.Instance.Config.Commands.SubCommands.KillsCommand.scpKills.Body, index + 1, p.Value.Nickname, p.Value.scpKills))) + "```");                    
+                    await command.RespondAsync("", ephemeral:Main.Instance.Config.Commands.SubCommands.KillsCommand.scpKills.PrivateMessage, embed:embed.Build());
                 }
             }
 
-            if (subcommand == "escapes")
+            if (subcommand == Main.Instance.Config.Commands.SubCommands.escapesCommand.CommandName)
             {
                 var topPlayers = EventsHandler.playerStats.OrderByDescending(p => p.Value.Escapes)
-                    .Take(10)
+                    .Take(Main.Instance.Config.Commands.SubCommands.escapesCommand.AmmountOfPlyToDisplay)
                     .ToList();
                 EmbedBuilder embed = new EmbedBuilder()
-                    .WithTitle("**Top 10 Most Escapes**")
-                    .WithColor(uint.Parse("E6F562", NumberStyles.HexNumber))
-                    .WithDescription("```ansi\n" + string.Join("\n", topPlayers.Select((p, index) => $"\u001b[2;33m\u001b[2;33m{index + 1, 2}.\u001b[0m\u001b[2;33m\u001b[0m {p.Value.Nickname,-20} Escapes: {p.Value.Escapes, -2}")) + "```");
-                await command.RespondAsync("", ephemeral:false, embed:embed.Build());
+                    .WithTitle(Main.Instance.Config.Commands.SubCommands.escapesCommand.Title)
+                    .WithColor(uint.Parse(Main.Instance.Config.Commands.SubCommands.escapesCommand.Color, NumberStyles.HexNumber))
+                    .WithDescription("```ansi\n" + string.Join("\n", topPlayers.Select((p, index) => String.Format(Main.Instance.Config.Commands.SubCommands.escapesCommand.Body, index + 1, p.Value.Nickname, p.Value.Escapes))) + "```");                    
+                await command.RespondAsync("", ephemeral:Main.Instance.Config.Commands.SubCommands.escapesCommand.PrivateMessage, embed:embed.Build());
                 return;
             }
 
-            if (subcommand == "cuffs")
+            if (subcommand == Main.Instance.Config.Commands.SubCommands.cuffsCommand.CommandName)
             {
                 var topPlayers = EventsHandler.playerStats.OrderByDescending(p => p.Value.PlayersCuffed)
-                    .Take(10)
+                    .Take(Main.Instance.Config.Commands.SubCommands.cuffsCommand.AmmountOfPlyToDisplay)
                     .ToList();
                 EmbedBuilder embed = new EmbedBuilder()
-                    .WithTitle("**Top 10 Most Players Cuffed**")
-                    .WithColor(uint.Parse("919191", NumberStyles.HexNumber))
-                    .WithDescription("```ansi\n" + string.Join("\n", topPlayers.Select((p, index) => $"\u001b[2;33m\u001b[2;33m{index + 1, 2}.\u001b[0m\u001b[2;33m\u001b[0m {p.Value.Nickname,-20} Players Cuffed: {p.Value.PlayersCuffed, -2}")) + "```");
-                await command.RespondAsync("", ephemeral:false, embed:embed.Build());
+                    .WithTitle(Main.Instance.Config.Commands.SubCommands.cuffsCommand.Title)
+                    .WithColor(uint.Parse(Main.Instance.Config.Commands.SubCommands.cuffsCommand.Color, NumberStyles.HexNumber))
+                    .WithDescription("```ansi\n" + string.Join("\n", topPlayers.Select((p, index) => String.Format(Main.Instance.Config.Commands.SubCommands.cuffsCommand.Body, index + 1, p.Value.Nickname, p.Value.PlayersCuffed))) + "```");                    
+                await command.RespondAsync("", ephemeral:Main.Instance.Config.Commands.SubCommands.cuffsCommand.PrivateMessage, embed:embed.Build());
                 return;
             }
 
-            if (subcommand == "damage")
+            if (subcommand == Main.Instance.Config.Commands.SubCommands.damageCommand.CommandName)
             {
                 var topPlayers = EventsHandler.playerStats.OrderByDescending(p => p.Value.DamageDealt)
-                    .Take(10)
+                    .Take(Main.Instance.Config.Commands.SubCommands.damageCommand.AmmountOfPlyToDisplay)
                     .ToList();
                 EmbedBuilder embed = new EmbedBuilder()
-                    .WithTitle("**Top 10 Most Damage Dealt**")
-                    .WithColor(uint.Parse("520800", NumberStyles.HexNumber))
-                    .WithDescription("```ansi\n" + string.Join("\n", topPlayers.Select((p, index) => $"\u001b[2;33m\u001b[2;33m{index + 1, 2}.\u001b[0m\u001b[2;33m\u001b[0m {p.Value.Nickname,-20} Total Damage Dealt: {p.Value.DamageDealt, -2}")) + "```");
-                await command.RespondAsync("", ephemeral:false, embed:embed.Build());
+                    .WithTitle(Main.Instance.Config.Commands.SubCommands.damageCommand.Title)
+                    .WithColor(uint.Parse(Main.Instance.Config.Commands.SubCommands.damageCommand.Color, NumberStyles.HexNumber))
+                    .WithDescription("```ansi\n" + string.Join("\n", topPlayers.Select((p, index) => String.Format(Main.Instance.Config.Commands.SubCommands.damageCommand.Body, index + 1, p.Value.Nickname, p.Value.DamageDealt))) + "```");                    
+                await command.RespondAsync("", ephemeral:Main.Instance.Config.Commands.SubCommands.damageCommand.PrivateMessage, embed:embed.Build());
                 return;
             }
 
-            if (subcommand == "rounds")
+            if (subcommand == Main.Instance.Config.Commands.SubCommands.roundCommand.CommandName)
             {
                 var topPlayers = EventsHandler.timeStats.OrderByDescending(p => p.Value.roundsPlayed)
-                    .Take(10)
+                    .Take(Main.Instance.Config.Commands.SubCommands.roundCommand.AmmountOfPlyToDisplay)
                     .ToList();
                 EmbedBuilder embed = new EmbedBuilder()
-                    .WithTitle("**Top 10 Most Rounds Played**")
-                    .WithColor(uint.Parse("068a3d", NumberStyles.HexNumber))
-                    .WithDescription("```ansi\n" + string.Join("\n", topPlayers.Select((p, index) => $"\u001b[2;33m\u001b[2;33m{index + 1, 2}.\u001b[0m\u001b[2;33m\u001b[0m {p.Value.Nickname,-20} Rounds Played: {p.Value.roundsPlayed, -2}")) + "```");
-                await command.RespondAsync("", ephemeral:false, embed:embed.Build());
+                    .WithTitle(Main.Instance.Config.Commands.SubCommands.roundCommand.Title)
+                    .WithColor(uint.Parse(Main.Instance.Config.Commands.SubCommands.roundCommand.Color, NumberStyles.HexNumber))
+                    .WithDescription("```ansi\n" + string.Join("\n", topPlayers.Select((p, index) => String.Format(Main.Instance.Config.Commands.SubCommands.roundCommand.Body, index + 1, p.Value.Nickname, p.Value.roundsPlayed))) + "```");                    
+                await command.RespondAsync("", ephemeral:Main.Instance.Config.Commands.SubCommands.roundCommand.PrivateMessage, embed:embed.Build());
                 return;
             }
 
-            if (subcommand == "timespent")
+            if (subcommand == Main.Instance.Config.Commands.SubCommands.timespentCommand.CommandName)
             {
                 var topPlayers = EventsHandler.timeStats.OrderByDescending(p => p.Value.longestTimeAlive)
-                    .Take(10)
+                    .Take(Main.Instance.Config.Commands.SubCommands.timespentCommand.AmmountOfPlyToDisplay)
                     .ToList();
                 EmbedBuilder embed = new EmbedBuilder()
-                    .WithTitle("**Top 10 Most Time Alive**")
-                    .WithColor(uint.Parse("068a3d", NumberStyles.HexNumber))
-                    .WithDescription("```ansi\n" + string.Join("\n", topPlayers.Select((p, index) => $"\u001b[2;33m\u001b[2;33m{index + 1, 2}.\u001b[0m\u001b[2;33m\u001b[0m {p.Value.Nickname,-20} Time Alive: {p.Value.longestTimeAlive.Hours}h {p.Value.longestTimeAlive.Minutes}m {p.Value.longestTimeAlive.Seconds}s")) + "```");
-                await command.RespondAsync("", ephemeral:false, embed:embed.Build());
+                    .WithTitle(Main.Instance.Config.Commands.SubCommands.timespentCommand.Title)
+                    .WithColor(uint.Parse(Main.Instance.Config.Commands.SubCommands.timespentCommand.Color, NumberStyles.HexNumber))
+                    .WithDescription("```ansi\n" + string.Join("\n", topPlayers.Select((p, index) => String.Format(Main.Instance.Config.Commands.SubCommands.timespentCommand.Body, index + 1, p.Value.Nickname, p.Value.timeSpent.Hours, p.Value.timeSpent.Minutes, p.Value.timeSpent.Seconds))) + "```");
+                await command.RespondAsync("", ephemeral:Main.Instance.Config.Commands.SubCommands.timespentCommand.PrivateMessage, embed:embed.Build());
                 return;
             }
 
-            if (subcommand == "timealive")
+            if (subcommand == Main.Instance.Config.Commands.SubCommands.timealiveCommand.CommandName)
             {
                 var topPlayers = EventsHandler.timeStats.OrderByDescending(p => p.Value.timeSpent)
-                    .Take(10)
+                    .Take(Main.Instance.Config.Commands.SubCommands.timealiveCommand.AmmountOfPlyToDisplay)
                     .ToList();
                 EmbedBuilder embed = new EmbedBuilder()
-                    .WithTitle("**Top 10 Most Time Played**")
-                    .WithColor(uint.Parse("068a3d", NumberStyles.HexNumber))
-                    .WithDescription("```ansi\n" + string.Join("\n", topPlayers.Select((p, index) => $"\u001b[2;33m\u001b[2;33m{index + 1, 2}.\u001b[0m\u001b[2;33m\u001b[0m {p.Value.Nickname,-20} Time Played: {p.Value.timeSpent.Hours}h {p.Value.timeSpent.Minutes}m {p.Value.timeSpent.Seconds}s")) + "```");
-                await command.RespondAsync("", ephemeral:false, embed:embed.Build());
-                return;
+                    .WithTitle(Main.Instance.Config.Commands.SubCommands.timealiveCommand.Title)
+                    .WithColor(uint.Parse(Main.Instance.Config.Commands.SubCommands.timealiveCommand.Color, NumberStyles.HexNumber))
+                    .WithDescription("```ansi\n" + string.Join("\n", topPlayers.Select((p, index) => String.Format(Main.Instance.Config.Commands.SubCommands.timealiveCommand.Body, index + 1, p.Value.Nickname, p.Value.longestTimeAlive.Hours, p.Value.longestTimeAlive.Minutes, p.Value.longestTimeAlive.Seconds))) + "```");                await command.RespondAsync("", ephemeral:Main.Instance.Config.Commands.SubCommands.timealiveCommand.PrivateMessage, embed:embed.Build());
             }
         }
     }

@@ -13,12 +13,14 @@ public abstract class Cuffing
 
             if (!EventsHandler.playerStats.ContainsKey(cufferId))
             {
-                EventsHandler.playerStats[cufferId] = new PlayerStats();
-                EventsHandler.playerStats[cufferId].Nickname = ev.Player.Nickname;
+                EventsHandler.playerStats[cufferId] = new PlayerStats
+                {
+                    Nickname = ev.Player.Nickname
+                };
             }
             
             var cuffStats = EventsHandler.playerStats[cufferId];
-            cuffStats.PlayersCuffed += 1;
+            cuffStats.PlayersCuffed++;
         }
     }
 }

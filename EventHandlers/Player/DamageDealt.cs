@@ -16,14 +16,14 @@ public abstract class DamageDealt
             
             if (!EventsHandler.playerStats.ContainsKey(attackerID))
             {
-                EventsHandler.playerStats[attackerID] = new PlayerStats();
-                EventsHandler.playerStats[attackerID].Nickname = ev.Attacker.Nickname;
+                EventsHandler.playerStats[attackerID] = new PlayerStats
+                {
+                    Nickname = ev.Attacker.Nickname
+                };
             }
             
             var damageStats = EventsHandler.playerStats[attackerID];
             damageStats.DamageDealt += (int)Math.Round(ev.Amount);
-            
-            Log.Warn("Damage dealt: " + (int)Math.Round(ev.Amount) + "by: " + ev.Attacker.Nickname);
         }
     }
 }

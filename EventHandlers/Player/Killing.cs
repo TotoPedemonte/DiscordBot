@@ -15,19 +15,19 @@ public abstract class Killing
             
             if (!EventsHandler.killsStats.ContainsKey(attackerId))
             {
-                EventsHandler.killsStats[attackerId] = new KillsStats();
-                EventsHandler.killsStats[attackerId].Nickname = ev.Attacker.Nickname;
+                EventsHandler.killsStats[attackerId] = new KillsStats
+                {
+                    Nickname = ev.Attacker.Nickname
+                };
             }
             
             var killStats = EventsHandler.killsStats[attackerId];
 
             if (ev.Player.Role.Side == Side.Scp)
-                killStats.scpKills += 1;
+                killStats.scpKills++;
             else if (ev.Player.Role.Side == Side.Tutorial)
                 return;
-            else killStats.humanKills += 1;
-
-            Log.Warn("User killed: " + ev.Player.Role.Name);
+            else killStats.humanKills++;
         }
     }
 }

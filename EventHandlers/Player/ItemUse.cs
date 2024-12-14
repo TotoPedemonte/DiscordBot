@@ -12,14 +12,14 @@ public abstract class ItemUse
         {
             if (!EventsHandler.playerStats.ContainsKey(ev.Player.UserId))
             {
-                EventsHandler.playerStats[ev.Player.UserId] = new PlayerStats();
-                EventsHandler.playerStats[ev.Player.UserId].Nickname = ev.Player.Nickname;
+                EventsHandler.playerStats[ev.Player.UserId] = new PlayerStats
+                {
+                    Nickname = ev.Player.Nickname
+                };
             }
             
             var itemStats = EventsHandler.playerStats[ev.Player.UserId];
-            itemStats.MedicalItems += 1;
-            
-            Log.Warn("Item Used: " + ev.Item.Type);
+            itemStats.MedicalItems++;
         }
     }
 }

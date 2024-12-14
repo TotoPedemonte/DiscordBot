@@ -8,10 +8,10 @@ namespace Discord_Bot.Modules;
 
 public abstract class DataManagment
 {
-    private static readonly string ConfigDirectory = Path.Combine("C:\\", "Users", "toto_", "AppData", "Roaming", "EXILED", "Configs", "DiscordBotStats");
-    private static readonly string plyFileName = "playerStats.json";
-    private static readonly string killFileName = "killStats.json";
-    private static readonly string timeFileName = "timeStats.json";
+    private static readonly string ConfigDirectory = Main.Instance.Config.JsonDirectory;
+    private static readonly string plyFileName = Main.Instance.Config.plyJsonFileName;
+    private static readonly string killFileName = Main.Instance.Config.killsJsonFileName;
+    private static readonly string timeFileName = Main.Instance.Config.timeJsonFileName;
     
     private static readonly string plyFilePath = Path.Combine(ConfigDirectory, plyFileName);
     private static readonly string killFilePath = Path.Combine(ConfigDirectory, killFileName);
@@ -41,7 +41,6 @@ public abstract class DataManagment
                 {
                     string existingJson = File.ReadAllText(timeFilePath);
                     existingPlayerData = JsonConvert.DeserializeObject<Dictionary<string, PlayerStats>>(existingJson) ?? new Dictionary<string, PlayerStats>();
-                    Log.Warn($"Valores del archivo anterior: {existingPlayerData.Count}");
                 }
                 
                 foreach (var entry in EventHandlers.EventsHandler.playerStats)
@@ -58,7 +57,6 @@ public abstract class DataManagment
                 {
                     string existingJson = File.ReadAllText(killFilePath);
                     existingKillsData = JsonConvert.DeserializeObject<Dictionary<string, KillsStats>>(existingJson) ?? new Dictionary<string, KillsStats>();
-                    Log.Warn($"Valores del archivo anterior: {existingKillsData.Count}");
                 }
                 
                 foreach (var entry in EventHandlers.EventsHandler.killsStats)
@@ -75,7 +73,6 @@ public abstract class DataManagment
                 {
                     string existingJson = File.ReadAllText(timeFilePath);
                     existingTimeData = JsonConvert.DeserializeObject<Dictionary<string, TimeStats>>(existingJson) ?? new Dictionary<string, TimeStats>();
-                    Log.Warn($"Valores del archivo anterior: {existingTimeData.Count}");
                 }
                 
                 foreach (var entry in EventHandlers.EventsHandler.timeStats)
@@ -88,12 +85,12 @@ public abstract class DataManagment
                 
                 dataSaved = true;
                 
-                Log.Warn("DATOS GUARDADOS EN JSON");
+                Log.Warn("Data saved in Json Files!");
             }
         }
         catch (Exception ex)
         {
-            Log.Error($"Error al guardar datos: {ex.Message}");
+            Log.Error($"Error while saving data: {ex.Message}");
         }
     }
     
@@ -101,8 +98,6 @@ public abstract class DataManagment
     {
         try
         {
-            Log.Warn(ConfigDirectory);
-            Log.Warn(plyFilePath);
             if (!Directory.Exists(ConfigDirectory))
             {
                 Directory.CreateDirectory(ConfigDirectory);
@@ -110,14 +105,13 @@ public abstract class DataManagment
             if (File.Exists(plyFilePath))
             {
                 string jsonData = File.ReadAllText(plyFilePath);
-                Log.Warn("Ply Stats Loaded");
                 dataSaved = false;
                 return JsonConvert.DeserializeObject<Dictionary<string, PlayerStats>>(jsonData) ?? new Dictionary<string, PlayerStats>();
             }
         }
         catch (Exception ex)
         {
-            Log.Error($"Error al cargar datos: {ex.Message}");
+            Log.Error($"Error while loading data: {ex.Message}");
         }
 
         return new Dictionary<string, PlayerStats>();
@@ -134,14 +128,13 @@ public abstract class DataManagment
             if (File.Exists(killFilePath))
             {
                 string jsonData = File.ReadAllText(killFilePath);
-                Log.Warn("Kills Stats Loaded");
                 dataSaved = false;
                 return JsonConvert.DeserializeObject<Dictionary<string, KillsStats>>(jsonData) ?? new Dictionary<string, KillsStats>();
             }
         }
         catch (Exception ex)
         {
-            Log.Error($"Error al cargar datos: {ex.Message}");
+            Log.Error($"Error while loading data: {ex.Message}");
         }
 
         return new Dictionary<string, KillsStats>();
@@ -158,14 +151,13 @@ public abstract class DataManagment
             if (File.Exists(timeFilePath))
             {
                 string jsonData = File.ReadAllText(timeFilePath);
-                Log.Warn("Time Stats Loaded");
                 dataSaved = false;
                 return JsonConvert.DeserializeObject<Dictionary<string, TimeStats>>(jsonData) ?? new Dictionary<string, TimeStats>();
             }
         }
         catch (Exception ex)
         {
-            Log.Error($"Error al cargar datos: {ex.Message}");
+            Log.Error($"Error while loading data: {ex.Message}");
         }
 
         return new Dictionary<string, TimeStats>();

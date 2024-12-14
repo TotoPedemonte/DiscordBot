@@ -14,14 +14,14 @@ public abstract class Escaping
             
             if (!EventsHandler.playerStats.ContainsKey(escapedPly))
             {
-                EventsHandler.playerStats[escapedPly] = new PlayerStats();
-                EventsHandler.playerStats[escapedPly].Nickname = ev.Player.Nickname;
+                EventsHandler.playerStats[escapedPly] = new PlayerStats
+                {
+                    Nickname = ev.Player.Nickname
+                };
             }
             
             var escapedStats = EventsHandler.playerStats[escapedPly];
-            escapedStats.Escapes += 1;
-            
-            Log.Warn("Player Escaped: " + ev.Player.Nickname);
+            escapedStats.Escapes++;
         }
     }
 }

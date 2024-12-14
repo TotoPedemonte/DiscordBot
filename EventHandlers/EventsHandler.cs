@@ -1,7 +1,5 @@
 ﻿using System.Collections.Generic;
 using Discord_Bot.Modules;
-using Exiled.API.Features;
-using Exiled.Events.EventArgs.Player;
 
 namespace Discord_Bot.EventHandlers;
 
@@ -18,7 +16,6 @@ public class EventsHandler
         Exiled.Events.Handlers.Player.Escaped += Player.Escaping.PlayerEscaped;
         Exiled.Events.Handlers.Player.Hurt += Player.DamageDealt.DealingDamage;
         Exiled.Events.Handlers.Player.Handcuffing += Player.Cuffing.PlayerCuffed;
-        Exiled.Events.Handlers.Player.DroppedItem += dropItemToSave;
         
         Exiled.Events.Handlers.Player.Died += Player.PlayerDied.OnPlayerDied;
         Exiled.Events.Handlers.Player.Left += Player.PlayerLeft.LeftServer;
@@ -34,7 +31,6 @@ public class EventsHandler
         Exiled.Events.Handlers.Player.Escaped -= Player.Escaping.PlayerEscaped;
         Exiled.Events.Handlers.Player.Hurt -= Player.DamageDealt.DealingDamage;
         Exiled.Events.Handlers.Player.Handcuffing -= Player.Cuffing.PlayerCuffed;
-        Exiled.Events.Handlers.Player.DroppedItem -= dropItemToSave;
         
         Exiled.Events.Handlers.Player.Died -= Player.PlayerDied.OnPlayerDied;
         Exiled.Events.Handlers.Player.Left -= Player.PlayerLeft.LeftServer;
@@ -42,14 +38,5 @@ public class EventsHandler
         
         Exiled.Events.Handlers.Server.WaitingForPlayers -= Server.WaitingPly.WaitingForPlayers;
         Exiled.Events.Handlers.Server.RoundEnded -= Server.RoundFinished.RoundFinish;
-    }
-
-    private static void dropItemToSave(DroppedItemEventArgs ev)
-    {
-        if (ev.Player.IsAlive && ev.Pickup.Category == ItemCategory.Grenade)
-        {
-            DataManagment.SaveData();
-            Log.Warn("Saving data from weapon");
-        }
     }
 }
